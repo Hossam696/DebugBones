@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "DebugBones",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "HossamEldin",
+	"CreatedByURL": "hossameldinnasser.wordpress.com",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "DebugBones",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

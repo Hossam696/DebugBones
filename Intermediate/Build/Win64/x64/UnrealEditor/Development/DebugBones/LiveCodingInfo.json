@@ -1,0 +1,12 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.DebugBones.cpp.obj": [
+			"BoneDebuggerComponent.gen.cpp.obj",
+			"DebugBones.init.gen.cpp.obj",
+			"PerModuleInline.gen.cpp.obj",
+			"BoneDebuggerComponent.cpp.obj",
+			"DebugBones.cpp.obj"
+		]
+	}
+}

@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\unreal engine\\unreal projects\\tpvarscpp\\plugins\\debugbones\\source\\debugbones\\private\\bonedebuggercomponent.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\unreal engine\\unreal projects\\tpvarscpp\\intermediate\\build\\win64\\x64\\tpvarscppeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "e:\\unreal engine\\unreal projects\\tpvarscpp\\plugins\\debugbones\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\debugbones\\definitions.debugbones.h",
+            "e:\\unreal engine\\unreal projects\\tpvarscpp\\plugins\\debugbones\\source\\debugbones\\public\\bonedebuggercomponent.h",
+            "e:\\unreal engine\\unreal projects\\tpvarscpp\\plugins\\debugbones\\intermediate\\build\\win64\\unrealeditor\\inc\\debugbones\\uht\\bonedebuggercomponent.generated.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystatics.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\source\\runtime\\engine\\classes\\kismet\\kismetsystemlibrary.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\source\\runtime\\coreuobject\\public\\uobject\\propertyaccessutil.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\kismetsystemlibrary.generated.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\source\\runtime\\engine\\classes\\sound\\dialoguetypes.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\dialoguetypes.generated.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\source\\runtime\\engine\\classes\\kismet\\gameplaystaticstypes.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gameplaystaticstypes.generated.h",
+            "e:\\unreal engine\\ue_5.6\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gameplaystatics.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
