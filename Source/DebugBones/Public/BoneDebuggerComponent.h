@@ -3,8 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "BoneDebuggerComponent.generated.h"
+
+
+USTRUCT(Blueprintable)
+struct FDrawDebugData
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FLinearColor DebugColor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DepthOffset;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ConeWidth =1.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool Enabled=true;
+};
 
 USTRUCT()
 struct FBoneDebugData
@@ -21,13 +39,7 @@ struct FBoneDebugData
 	TArray<FName> ChildBones;
 	
 	UPROPERTY()
-	FColor DebugColor;
-	
-	UPROPERTY()
-	float DepthOffset;
-	
-	UPROPERTY()
-	bool Enabled=false;
+	FDrawDebugData DrawData;
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -57,14 +69,14 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable  ,meta=(AutoCreateRefTerm="ExcludeBones , DrawData, ParentBone",CPP_Default_ParentBone="root"))
 	void RegisterBoneData(const USkeletalMeshComponent* SkeletalMesh, const FName& ParentBone ,
-							const FLinearColor DebugColor=FLinearColor::Blue, const float DepthOffset=0.0f);
+							const FDrawDebugData& DrawData,const TArray<FName>& ExcludeBones);
 	
-	bool SearchDebugData(const USkeletalMeshComponent* SkeletalMesh, TArray<FBoneDebugData*>& OutDebugData);
+	bool SearchDebugData(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone, TArray<FBoneDebugData*>& OutDebugData);
 	
-	UFUNCTION(BlueprintCallable)
-	void SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const bool bEnableDraw,const FLinearColor DrawColor);
+	UFUNCTION(BlueprintCallable,meta=(AutoCreateRefTerm="DrawData, ParentBone",CPP_Default_ParentBone="root"))
+	void SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone,const FDrawDebugData& DrawData);
 	
 	void DrawBones();
 };

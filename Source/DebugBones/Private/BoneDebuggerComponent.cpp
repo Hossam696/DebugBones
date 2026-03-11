@@ -31,12 +31,20 @@ void UBoneDebuggerComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 }
 
 void UBoneDebuggerComponent::RegisterBoneData(const USkeletalMeshComponent* SkeletalMesh, const FName& ParentBone,
-												const FLinearColor DebugColor , const float DepthOffset)
+												const FDrawDebugData& DrawData,const TArray<FName>& ExcludeBones)
 {
 	FBoneDebugData TempBoneData(SkeletalMesh, ParentBone);
 	TArray<FName> LocalSocketNames = SkeletalMesh->GetAllSocketNames();
 	for (const FName& SocketName : LocalSocketNames)
 	{
+		if (!ExcludeBones.IsEmpty())
+		{
+			if (ExcludeBones.Contains(SocketName))
+			{
+				continue;
+			}
+		}
+		
 		FName CurrentParentBone = SkeletalMesh->GetParentBone(SocketName);
 		while (CurrentParentBone != NAME_None)
 		{
@@ -49,41 +57,45 @@ void UBoneDebuggerComponent::RegisterBoneData(const USkeletalMeshComponent* Skel
 	}
 	if (TempBoneData.ChildBones.Num() > 0)
 	{
-		TempBoneData.DebugColor = DebugColor.ToFColor(true);
-		TempBoneData.DepthOffset = DepthOffset;
-		TempBoneData.Enabled = true;
+		TempBoneData.DrawData= DrawData;
 		BonesData.Add(TempBoneData);
 	}
 }
 
-bool UBoneDebuggerComponent::SearchDebugData(const USkeletalMeshComponent* SkeletalMesh,
+bool UBoneDebuggerComponent::SearchDebugData(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone,
 	TArray<FBoneDebugData*>& OutDebugData)
 {
+	bool bAllTrees = ParentBone==NAME_None;
 	for (FBoneDebugData& CurrentBoneData : BonesData)
 	{
 		if (SkeletalMesh == CurrentBoneData.SkeletalMesh)
 		{
+			if (!bAllTrees && ParentBone!=CurrentBoneData.ParentBone)
+			{
+				continue;
+			}
 			OutDebugData.Add(&CurrentBoneData);
 		}
 	}
 	return OutDebugData.Num() > 0;
 }
 
-void UBoneDebuggerComponent::SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const bool bEnableDraw, const FLinearColor DrawColor)
+void UBoneDebuggerComponent::SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone,
+														const FDrawDebugData& DrawData)
 {
 	TArray<FBoneDebugData*> DebugData;
-	if (SearchDebugData(SkeletalMesh,DebugData))
+	if (SearchDebugData(SkeletalMesh,ParentBone,DebugData))
 	{
 		for (FBoneDebugData* CurrentBoneData : DebugData)
 		{
-			CurrentBoneData->Enabled = bEnableDraw;
-			CurrentBoneData->DebugColor = DrawColor.ToFColor(true);
+			CurrentBoneData->DrawData = DrawData;
 		}
 	}
 }
 
 void UBoneDebuggerComponent::DrawBones()
 {
+#if ENABLE_DRAW_DEBUG
 	if (not bEnableDrawBones or not OwnerPawn)
 	{
 		return;
@@ -91,12 +103,17 @@ void UBoneDebuggerComponent::DrawBones()
 	for (const FBoneDebugData CurrentBoneData : BonesData)
 	{
 		const USkeletalMeshComponent* SkeletalMesh = CurrentBoneData.SkeletalMesh;
-		if (!CurrentBoneData.Enabled || !SkeletalMesh)
+		if (!CurrentBoneData.DrawData.Enabled || !SkeletalMesh)
 		{
 			continue;
 		}
 		for (const FName ChildBone : CurrentBoneData.ChildBones)
 		{
+			FDrawDebugData DrawData = CurrentBoneData.DrawData;
+			float ConeWidth = FMath::DegreesToRadians(DrawData.ConeWidth);
+			float SphereRadius = DrawData.ConeWidth*1.5f;
+			FLinearColor ConeColor = DrawData.DebugColor*0.7f;
+			
 			FVector ChildBoneLocation = SkeletalMesh->GetSocketLocation(ChildBone);
 			FName ParentBone = SkeletalMesh->GetParentBone(ChildBone);
 			FVector ParentBoneLocation = SkeletalMesh->GetSocketLocation(ParentBone);
@@ -105,11 +122,13 @@ void UBoneDebuggerComponent::DrawBones()
 			
 			FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(),0)->GetCameraLocation();
 			FVector DirectionToCamera = (CameraLocation - ParentBoneLocation).GetSafeNormal();
-			FVector Origin = ChildBoneLocation+(DirectionToCamera * CurrentBoneData.DepthOffset);
+			FVector Origin = ChildBoneLocation+(DirectionToCamera * DrawData.DepthOffset);
 			
-			DrawDebugCone(GetWorld(),Origin,Direction,Length,FMath::DegreesToRadians(5),FMath::DegreesToRadians(5),4,CurrentBoneData.DebugColor);
-			DrawDebugSphere(GetWorld(),Origin,3,6,CurrentBoneData.DebugColor);
+			DrawDebugCone(GetWorld(),Origin,Direction,Length,ConeWidth,ConeWidth,4,ConeColor.ToFColor(true));
+			DrawDebugSphere(GetWorld(),Origin,SphereRadius,6,DrawData.DebugColor.ToFColor(true));
 		}
 	}
+#endif
+	
 }
 
