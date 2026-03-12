@@ -78,5 +78,8 @@ public:
 	UFUNCTION(BlueprintCallable,meta=(AutoCreateRefTerm="DrawData, ParentBone",CPP_Default_ParentBone="root"))
 	void SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone,const FDrawDebugData& DrawData);
 	
+	UFUNCTION(BlueprintCallable)
+	void FilterNames(const TArray<FName>& FilterWords, TArray<FName> InNames, TArray<FName>& OutNames);
+	
 	void DrawBones();
 };

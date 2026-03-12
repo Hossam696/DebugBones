@@ -93,6 +93,21 @@ void UBoneDebuggerComponent::SetBoneDebugDrawSettings(const USkeletalMeshCompone
 	}
 }
 
+void UBoneDebuggerComponent::FilterNames(const TArray<FName>& FilterWords, TArray<FName> InNames, TArray<FName>& OutNames)
+{
+	for (const FName& CurrentName : InNames)
+	{
+		for (const FName& CurrentFilterWord : FilterWords)
+		{
+			if (CurrentName.ToString().Contains(CurrentFilterWord.ToString()))
+			{
+				OutNames.Add(CurrentName);
+				break;
+			}
+		}
+	}
+}
+
 void UBoneDebuggerComponent::DrawBones()
 {
 #if ENABLE_DRAW_DEBUG
@@ -129,6 +144,6 @@ void UBoneDebuggerComponent::DrawBones()
 		}
 	}
 #endif
-	
+
 }
 
