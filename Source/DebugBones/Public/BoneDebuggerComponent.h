@@ -69,17 +69,33 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UFUNCTION(BlueprintCallable  ,meta=(AutoCreateRefTerm="ExcludeBones , DrawData, ParentBone",CPP_Default_ParentBone="root"))
-	void RegisterBoneData(const USkeletalMeshComponent* SkeletalMesh, const FName& ParentBone ,
+	/** Register Bones Tree to Be Drawn, Tree is defined by Mesh and Parent Bone - This Function is usually in begin play to gather data
+	 * @param SkeletalMesh Skeletal Mesh from which the bones are drawn
+	 * @param ParentBone Top Bone that all bones beneath are drawn , if None or NotExisted Bone; Nothing will be drawn
+	 * @param DrawData Settings of the Debug Drawing
+	 * @param ExcludeBones Bones that won't be drawn
+	 */
+	UFUNCTION(BlueprintCallable  ,meta=(AutoCreateRefTerm="ExcludeBones , DrawData, ParentBone"),Category="Bone Debugger")
+	void RegisterBoneData(const USkeletalMeshComponent* SkeletalMesh, const FName& ParentBone,
 							const FDrawDebugData& DrawData,const TArray<FName>& ExcludeBones);
 	
 	bool SearchDebugData(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone, TArray<FBoneDebugData*>& OutDebugData);
 	
-	UFUNCTION(BlueprintCallable,meta=(AutoCreateRefTerm="DrawData, ParentBone",CPP_Default_ParentBone="root"))
+	/** Change Draw Settings of a tree that is defined be Mesh and Parent Bone
+	 * @param SkeletalMesh Skeletal Mesh from which the bones are drawn
+	 * @param ParentBone Top Bone that all bones beneath are drawn , if None or NotExisted Bone; Nothing will change
+	 * @param DrawData Settings of the Debug Drawing
+	 */
+	UFUNCTION(BlueprintCallable,meta=(AutoCreateRefTerm="DrawData, ParentBone"),Category="Bone Debugger")
 	void SetBoneDebugDrawSettings(const USkeletalMeshComponent* SkeletalMesh,const FName& ParentBone,const FDrawDebugData& DrawData);
 	
-	UFUNCTION(BlueprintCallable)
-	void FilterNames(const TArray<FName>& FilterWords, TArray<FName> InNames, TArray<FName>& OutNames);
+	/** Filter Array of Names by some words, returns another array of the names that has any of these words in it 
+	 * @param FilterWords Words that if exists in any word in InNames, It get added to the OutNames
+	 * @param InNames Names that are getting filtered
+	 * @param OutNames Names that has any word from FilterWords in them
+	 */
+	UFUNCTION(BlueprintCallable,Category="Bone Debugger")
+	void FilterNames(const TArray<FName>& FilterWords,TArray<FName> InNames,TArray<FName>& OutNames);
 	
 	void DrawBones();
 };
