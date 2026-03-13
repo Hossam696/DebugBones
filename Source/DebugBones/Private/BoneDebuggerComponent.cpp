@@ -126,7 +126,7 @@ void UBoneDebuggerComponent::DrawBones()
 		{
 			FDrawDebugData DrawData = CurrentBoneData.DrawData;
 			float ConeWidth = FMath::DegreesToRadians(DrawData.ConeWidth);
-			float SphereRadius = DrawData.ConeWidth*1.5f;
+			float SphereRadius = DrawData.ConeWidth*DrawData.ConeSphereRatio;
 			FLinearColor ConeColor = DrawData.DebugColor*0.7f;
 			
 			FVector ChildBoneLocation = SkeletalMesh->GetSocketLocation(ChildBone);

@@ -21,6 +21,9 @@ struct FDrawDebugData
 	float ConeWidth =1.0f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ConeSphereRatio =1.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Enabled=true;
 };
 
