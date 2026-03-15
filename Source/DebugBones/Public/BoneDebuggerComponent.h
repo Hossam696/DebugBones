@@ -4,27 +4,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
 #include "BoneDebuggerComponent.generated.h"
 
+class USkeletalMeshComponent;
 
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct FDrawDebugData
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FLinearColor DebugColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BoneDebuuger|DrawData")
+	FLinearColor DebugColor = FLinearColor::Black;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float DepthOffset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BoneDebuuger|DrawData")
+	float DepthOffset = 0.0f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BoneDebuuger|DrawData")
 	float ConeWidth =1.0f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BoneDebuuger|DrawData")
 	float ConeSphereRatio =1.0f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BoneDebuuger|DrawData")
 	bool Enabled=true;
 };
 
@@ -55,10 +57,10 @@ public:
 	// Sets default values for this component's properties
 	UBoneDebuggerComponent();
 	
-	UPROPERTY(Blueprintable, EditAnywhere, Category="BonesData")
+	UPROPERTY()
 	TArray<FBoneDebugData> BonesData;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "BoneDebuuger|DrawData")
 	bool bEnableDrawBones=true;
 	
 	UPROPERTY()
@@ -87,7 +89,9 @@ public:
 	
 	/** Change Draw Settings of a tree that is defined be Mesh and Parent Bone
 	 * @param SkeletalMesh Skeletal Mesh from which the bones are drawn
-	 * @param ParentBone Top Bone that all bones beneath are drawn , if None or NotExisted Bone; Nothing will change
+	 * @param ParentBone Top Bone that all bones beneath are drawn
+	 * - if None : All Registered Trees with that Skeletal Mesh are changed
+	 * - if Non-Existed Bone : Nothing will change
 	 * @param DrawData Settings of the Debug Drawing
 	 */
 	UFUNCTION(BlueprintCallable,meta=(AutoCreateRefTerm="DrawData, ParentBone"),Category="Bone Debugger")

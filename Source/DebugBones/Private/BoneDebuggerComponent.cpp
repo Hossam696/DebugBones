@@ -2,7 +2,9 @@
 //github - repo : https://github.com/Hossam696/DebugBones
 
 #include "BoneDebuggerComponent.h"
+#include "DrawDebugHelpers.h"
 #include "Kismet\GameplayStatics.h"
+#include "Components/SkeletalMeshComponent.h"
 
 // Sets default values for this component's properties
 UBoneDebuggerComponent::UBoneDebuggerComponent()
@@ -124,6 +126,7 @@ void UBoneDebuggerComponent::DrawBones()
 		{
 			continue;
 		}
+		FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(this,0)->GetCameraLocation();
 		for (const FName ChildBone : CurrentBoneData.ChildBones)
 		{
 			FDrawDebugData DrawData = CurrentBoneData.DrawData;
@@ -137,8 +140,7 @@ void UBoneDebuggerComponent::DrawBones()
 			float Length = FVector::Dist(ParentBoneLocation, ChildBoneLocation);
 			FVector Direction = (ParentBoneLocation-ChildBoneLocation)/Length;
 			
-			FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(),0)->GetCameraLocation();
-			FVector DirectionToCamera = (CameraLocation - ParentBoneLocation).GetSafeNormal();
+			FVector DirectionToCamera = (CameraLocation - ChildBoneLocation).GetSafeNormal();
 			FVector Origin = ChildBoneLocation+(DirectionToCamera * DrawData.DepthOffset);
 			
 			DrawDebugCone(GetWorld(),Origin,Direction,Length,ConeWidth,ConeWidth,4,ConeColor.ToFColor(true));
