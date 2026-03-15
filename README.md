@@ -27,6 +27,9 @@ DebugBones is a custom plugin that provides tools to visualize and debug bone hi
 - Unreal Engine 4.27+ or 5.x
 - Works with any project that uses skeletal meshes
 
+You can follow this tutorial to build for different versions of Unreal
+[![Video](https://img.youtube.com/vi/sC0gnfYzFzU/0.jpg)](https://youtu.be/sC0gnfYzFzU)
+
 ## Usage
 
 ### Basic Setup
@@ -44,8 +47,12 @@ DebugBones is a custom plugin that provides tools to visualize and debug bone hi
      - DrawData: Struct with your preferred debug settings
      - ExcludeBones: Array of bone names to skip (optional)
 
+![Registering Bones](Resources/BeginPlay_RegisterBones.png)
+
 2. **Modify Settings at Runtime**:
    - Use `SetBoneDebugDrawSettings` to change colors, sizes, etc., while the game is running.
+
+![Edit In Runtime](Resources/RealtimeDraw.png)
 
 3. **Filter Bone Names**:
    - Use `FilterNames` to find bones containing specific keywords.
@@ -54,6 +61,7 @@ DebugBones is a custom plugin that provides tools to visualize and debug bone hi
 
 ```cpp
 // In your actor's BeginPlay
+FDrawDebugData DrawSettings;
 UBoneDebuggerComponent* Debugger = NewObject<UBoneDebuggerComponent>(this);
 Debugger->RegisterBoneData(SkeletalMeshComponent, FName("root"), DrawSettings, ExcludedBones);
 ```
@@ -94,7 +102,3 @@ Debugger->RegisterBoneData(SkeletalMeshComponent, FName("root"), DrawSettings, E
 ## Author
 
 Hossam Eldin Nasser
-
-## License
-
-This plugin is provided as-is for educational and development purposes. Feel free to modify and distribute according to your needs.
