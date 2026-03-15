@@ -47,12 +47,12 @@ You can follow this tutorial to build for different versions of Unreal
      - DrawData: Struct with your preferred debug settings
      - ExcludeBones: Array of bone names to skip (optional)
 
-![Registering Bones](Resources/BeginPlay_RegisterBones.png)
+![Registering Bones](Resources/BeginPlay_RegisterBones.PNG)
 
 2. **Modify Settings at Runtime**:
    - Use `SetBoneDebugDrawSettings` to change colors, sizes, etc., while the game is running.
 
-![Edit In Runtime](Resources/RealtimeDraw.png)
+![Edit In Runtime](Resources/RealtimeDraw.PNG)
 
 3. **Filter Bone Names**:
    - Use `FilterNames` to find bones containing specific keywords.
